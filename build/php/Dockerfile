@@ -20,17 +20,12 @@ RUN apt-get update && apt-get install -y \
 
 # copy extension pkg to the home dir.
 COPY ./libs/redis-5.1.1.tgz /tmp/redis.tgz
-COPY ./libs/yaf-3.0.8.tgz /tmp/yaf.tgz
 
 # install redis extension.
 RUN pecl install /tmp/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
-# install yaf extension.
-RUN pecl install /tmp/yaf.tgz && echo "extension=yaf.so" > /usr/local/etc/php/conf/conf.d/yaf.ini
-
 # rm ext tar pkg.
-RUN rm -rf /opt/redis/tgz \
-        rm -rf /opt/yaf.tgz
+RUN rm -rf /tmp/redis.tgz \
 
 # set word dir.
 WORKDIR /init
