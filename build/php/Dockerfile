@@ -25,7 +25,7 @@ COPY ./libs/redis-5.1.1.tgz /tmp/redis.tgz
 RUN pecl install /tmp/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 # rm ext tar pkg.
-RUN rm -rf /tmp/redis.tgz \
+RUN rm -rf /tmp/redis.tgz
 
 # set word dir.
 WORKDIR /init
