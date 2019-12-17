@@ -26,7 +26,7 @@ COPY ./libs/yaf-3.0.8.tgz /tmp/yaf.tgz
 RUN pecl install /tmp/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 # install yaf extension.
-RUN pecl install /tmp/yaf.tgz && echo "yaf.so" > /usr/local/etc/php/conf/conf.d/yaf.ini
+RUN pecl install /tmp/yaf.tgz && echo "extension=yaf.so" > /usr/local/etc/php/conf/conf.d/yaf.ini
 
 # rm ext tar pkg.
 RUN rm -rf /opt/redis/tgz \
