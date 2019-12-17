@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install mysqli
 
 # copy extension pkg to the home dir.
-COPY ../../libs/redis-5.1.1.tgz /tmp/redis.tgz
-COPY ../../libs/yaf-3.0.8.tgz /tmp/yaf.tgz
+COPY ./libs/redis-5.1.1.tgz /tmp/redis.tgz
+COPY ./libs/yaf-3.0.8.tgz /tmp/yaf.tgz
 
 # install redis extension.
 RUN pecl install /tmp/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
