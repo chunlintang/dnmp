@@ -1,0 +1,58 @@
+version: '3'
+services:
+  php-fpm:
+    build: ./php
+    restart: always
+    ports:
+      - "9000:000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../app:/data0/www/htdocs:rw
+      - ../conf/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ../conf/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+      - ../conf/php/php-fpm.d:/usr/local/etc/php-fpm.d:ro
+      - ../init/logs/php-fpm:/var/logs/php-fpm:rw
+    links:
+      - "mysql"
+      - "redis"
+    command: php-fpm
+  mysql:
+    build: ./mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../init/mysql:/var/lib/mysql:rw
+      - ../init/logs/mysql:/var/logs/mysql:rw
+      - ../conf/mysql/conf.d:/etc/mysql/conf.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: root
+    command: "--character-set-server=utf8"
+  redis:
+    build: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../init/redis:/data
+    restart: always
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    depends_on:
+      - php-fpm
+    links:
+      - php-fpm:php-fpm
+    volumes:
+      - ../app:/data0/www/htdocs:rw
+      - ../conf/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../conf/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../init/logs/nginx:/var/logs/nginx
+    command: nginx -g 'daemon off;'
