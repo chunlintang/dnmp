@@ -3,6 +3,7 @@ services:
   php-fpm:
     build: ./php
     restart: always
+    container_name: m_php
     ports:
       - "9000:9000"
     volumes:
@@ -19,6 +20,7 @@ services:
   mysql:
     build: ./mysql
     restart: always
+    container_name: m_mysql
     ports:
       - "3306:3306"
     volumes:
@@ -34,14 +36,16 @@ services:
     command: "--character-set-server=utf8"
   redis:
     build: ./redis
+    restart: always
+    container_name: m_redis
     ports:
       - "6379:6379"
     volumes:
       - ../init/redis:/data
-    restart: always
   nginx:
     build: ./nginx
     restart: always
+    container_name: m_nginx
     ports:
       - "80:80"
       - "8080:8080"
