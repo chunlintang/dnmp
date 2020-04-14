@@ -61,3 +61,20 @@ services:
       - ../conf/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../init/logs/nginx:/var/logs/nginx
     command: nginx -g 'daemon off;'
+  openresty:
+    build: ./openresty
+    image: openresty/openresty
+    restart: always
+    privileged: true
+    ports:
+      - "8888:80"
+      - "4430:443"
+    volumes:
+      - "../conf/openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf"
+      - "../conf/openresty/conf.d:/usr/local/openresty/nginx/conf/conf.d"
+      - "../app/lua:/lua"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        while true;do sleep 100;done
